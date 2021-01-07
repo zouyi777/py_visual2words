@@ -15,6 +15,9 @@ for i in range(50):
     dog = np.array(Image.open('data/data_train_images/dog (' + str(i + 1) + ').jpg'))
     data.append(dog)
     labels.append(1)
+dog = np.array(Image.open('data/data_train_images/dog (51).jpg'))
+data.append(dog)
+labels.append(1)
 
 data = np.array(data)
 labels = np.array(labels)

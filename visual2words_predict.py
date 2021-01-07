@@ -6,8 +6,8 @@ from PIL import Image
 from matplotlib.font_manager import FontProperties # 解决中文乱码的问题
 font_set = FontProperties(fname=r"C:\Windows\Fonts\simsun.ttc", size=12)
 
-my_img = np.array(Image.open('data/data_test_images/test (16).jpg'))
-# my_img = np.array(Image.open('data/data_train_images/cat (1).jpg'))
+my_img = np.array(Image.open('data/data_test_images/test (1).jpg'))
+# my_img = np.array(Image.open('data/data_train_images/dog (1).jpg'))
 
 class_names = ['猫', '狗']
 xticks = [0, 1]
