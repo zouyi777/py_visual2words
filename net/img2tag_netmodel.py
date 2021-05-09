@@ -59,19 +59,23 @@ def cbam_block(input_xs, reduction_ratio=0.5): # input_xs(None,50,50,64)
     return add_refined_input
 
 # 构建CBAM网络模型
-def CBAMModel():
+def CBAMModel(class_len):
+    chanDim = 3
     img_input = kl.Input(shape=(100, 100, 3))  # 输入层
+    if k.image_data_format() == "channels_first":
+        chanDim = 1
+        img_input = (3, 100, 100)
 
     x = cbam_block(img_input)  # 调用cbam 注意力模块
 
     # 卷积层
     x = kl.Conv2D(64, (3, 3), padding='same')(x)
-    x = kl.BatchNormalization(axis=3)(x)
+    x = kl.BatchNormalization(axis=chanDim)(x)
     x = kl.Activation('relu')(x)
     x = kl.MaxPool2D(pool_size=[2, 2], strides=2)(x)
 
     x = kl.Conv2D(64, (3, 3), padding='same')(x)
-    x = kl.BatchNormalization(axis=3)(x)
+    x = kl.BatchNormalization(axis=chanDim)(x)
     x = kl.Activation('relu')(x)
     x = kl.MaxPool2D(pool_size=[2, 2], strides=2)(x)
 
@@ -80,7 +84,7 @@ def CBAMModel():
     x = kl.BatchNormalization()(x)
     x = kl.Dense(1024, activation='relu')(x)
     x = kl.BatchNormalization()(x)
-    x = kl.Dense(2, activation='sigmoid', name='fc')(x)
 
+    x = kl.Dense(class_len, activation='sigmoid', name='fc')(x)
     model = models.Model(img_input, x)
     return model
